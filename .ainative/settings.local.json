@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(cat:*)",
+      "Bash(chmod:*)",
+      "Bash(tree:*)",
+      "Bash(npm view:*)",
+      "Bash(npm test:*)",
+      "Bash(npm run:*)",
+      "Bash(find:*)",
+      "Bash(railway whoami:*)",
+      "Bash(railway logs:*)",
+      "Bash(railway status:*)",
+      "Bash(gh issue view:*)",
+      "Bash(gh issue list:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr create:*)",
+      "Bash(source venv/bin/activate)",
+      "Bash(cp:*)",
+      "Read(//private/tmp/**)",
+      "WebFetch(domain:github.com)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

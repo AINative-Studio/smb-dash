@@ -1,0 +1,71 @@
+{
+  "$schema": "https://ainative.studio/schemas/port-config.v1.json",
+  "project_name": "FullStackApp",
+  "description": "Database + Backend API + Frontend - Complete Stack Example",
+  "services": [
+    {
+      "name": "Database",
+      "description": "PostgreSQL Database",
+      "port": 5432,
+      "start_command": "docker run --rm -p {port}:5432 -e POSTGRES_PASSWORD=dev postgres:15",
+      "health_check": "pg_isready -h localhost -p {port}",
+      "can_reassign": false,
+      "required": true,
+      "log_file": "/tmp/myapp-db.log"
+    },
+    {
+      "name": "Backend",
+      "description": "Python FastAPI Backend",
+      "port": 8000,
+      "directory": "./backend",
+      "start_command": "python -m uvicorn main:app --reload --port {port}",
+      "health_check": "http://localhost:{port}/health",
+      "can_reassign": true,
+      "required": true,
+      "depends_on": ["Database"],
+      "log_file": "/tmp/myapp-backend.log",
+      "pre_start": "pip install -r requirements.txt",
+      "env_vars": {
+        "DATABASE_URL": "postgresql://postgres:dev@localhost:{Database_port}/myapp",
+        "PORT": "{port}",
+        "ENV": "development"
+      }
+    },
+    {
+      "name": "Frontend",
+      "description": "React Frontend",
+      "port": 3000,
+      "directory": "./frontend",
+      "start_command": "npm run dev",
+      "health_check": "http://localhost:{port}",
+      "can_reassign": true,
+      "required": true,
+      "depends_on": ["Backend"],
+      "log_file": "/tmp/myapp-frontend.log",
+      "pre_start": "npm install",
+      "env_updates": {
+        ".env.local": {
+          "REACT_APP_API_URL": "http://localhost:{Backend_port}",
+          "PORT": "{port}"
+        }
+      }
+    }
+  ],
+  "defaults": {
+    "port_conflict_mode": "ask",
+    "startup_timeout": 30
+  },
+  "summary": {
+    "show_service_urls": true,
+    "additional_urls": [
+      {
+        "name": "API Docs",
+        "url": "http://localhost:{Backend_port}/docs"
+      }
+    ],
+    "open_browser": {
+      "enabled": true,
+      "url": "http://localhost:{Frontend_port}"
+    }
+  }
+}

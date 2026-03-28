@@ -1,0 +1,89 @@
+{
+  "$schema": "https://ainative.studio/schemas/port-config.v1.json",
+  "project_name": "Microservices",
+  "description": "Multiple Independent Services - Microservices Architecture Example",
+  "services": [
+    {
+      "name": "AuthService",
+      "description": "Authentication & Authorization Service",
+      "port": 8001,
+      "directory": "./auth-service",
+      "start_command": "node index.js",
+      "health_check": "http://localhost:{port}/health",
+      "can_reassign": true,
+      "required": true,
+      "env_vars": {
+        "PORT": "{port}",
+        "SERVICE_NAME": "auth"
+      }
+    },
+    {
+      "name": "UserService",
+      "description": "User Management Service",
+      "port": 8002,
+      "directory": "./user-service",
+      "start_command": "node index.js",
+      "health_check": "http://localhost:{port}/health",
+      "can_reassign": true,
+      "required": true,
+      "depends_on": ["AuthService"],
+      "env_vars": {
+        "PORT": "{port}",
+        "AUTH_SERVICE_URL": "http://localhost:{AuthService_port}",
+        "SERVICE_NAME": "user"
+      }
+    },
+    {
+      "name": "NotificationService",
+      "description": "Email & Push Notification Service",
+      "port": 8003,
+      "directory": "./notification-service",
+      "start_command": "node index.js",
+      "health_check": "http://localhost:{port}/health",
+      "can_reassign": true,
+      "required": false,
+      "env_vars": {
+        "PORT": "{port}",
+        "SERVICE_NAME": "notification"
+      }
+    },
+    {
+      "name": "APIGateway",
+      "description": "API Gateway & Load Balancer",
+      "port": 8000,
+      "directory": "./gateway",
+      "start_command": "node index.js",
+      "health_check": "http://localhost:{port}/health",
+      "can_reassign": true,
+      "required": true,
+      "depends_on": ["AuthService", "UserService", "NotificationService"],
+      "env_vars": {
+        "PORT": "{port}",
+        "AUTH_SERVICE_URL": "http://localhost:{AuthService_port}",
+        "USER_SERVICE_URL": "http://localhost:{UserService_port}",
+        "NOTIFICATION_SERVICE_URL": "http://localhost:{NotificationService_port}"
+      }
+    }
+  ],
+  "defaults": {
+    "port_conflict_mode": "reassign",
+    "startup_timeout": 20
+  },
+  "summary": {
+    "show_service_urls": true,
+    "additional_urls": [
+      {
+        "name": "Gateway API",
+        "url": "http://localhost:{APIGateway_port}"
+      },
+      {
+        "name": "Auth Service",
+        "url": "http://localhost:{AuthService_port}"
+      },
+      {
+        "name": "User Service",
+        "url": "http://localhost:{UserService_port}"
+      }
+    ]
+  }
+}

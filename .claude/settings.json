@@ -1,0 +1,46 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git pull:*)",
+      "Bash(git checkout:*)",
+      "Bash(git branch:*)",
+      "Bash(cat:*)",
+      "Bash(chmod:*)",
+      "Bash(tree:*)",
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(npm:*)",
+      "Bash(npx:*)",
+      "Bash(railway whoami:*)",
+      "Bash(railway logs:*)",
+      "Bash(railway status:*)",
+      "Bash(gh issue view:*)",
+      "Bash(gh issue list:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr create:*)",
+      "Bash(source venv/bin/activate)",
+      "Bash(cp:*)",
+      "Bash(mkdir:*)",
+      "Bash(bash .claude/hooks/install-hooks.sh:*)",
+      "Bash(bash .ainative/hooks/install-hooks.sh:*)",
+      "Read(/private/tmp/**)",
+      "WebFetch(domain:github.com)"
+    ],
+    "deny": [],
+    "ask": []
+  },
+  "hooks": {
+    "PreToolUse": [],
+    "PostToolUse": [],
+    "Stop": []
+  }
+}

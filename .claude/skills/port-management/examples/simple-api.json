@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ainative.studio/schemas/port-config.v1.json",
+  "project_name": "SimpleAPI",
+  "description": "Single API Server - Minimal Configuration Example",
+  "services": [
+    {
+      "name": "API",
+      "port": 8080,
+      "start_command": "go run main.go",
+      "health_check": "http://localhost:{port}/health",
+      "can_reassign": true,
+      "required": true,
+      "env_vars": {
+        "PORT": "{port}",
+        "ENV": "development"
+      }
+    }
+  ],
+  "defaults": {
+    "port_conflict_mode": "ask"
+  }
+}
